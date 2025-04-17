@@ -3,6 +3,8 @@ package database
 import (
 	"database/sql"
 	"log"
+
+	"github.com/ljb6/wavy-backend/models"
 )
 
 func CreateTables(db *sql.DB) {
@@ -20,4 +22,15 @@ func CreateTables(db *sql.DB) {
 	if err != nil {
 		log.Fatal("Error while creating 'users' table:", err)
 	}
+}
+
+func CreateUser(db *sql.DB, user models.User) (int, error) {
+	query := "INSERT INTO users (name, email, password, plan) VALUES ($1, $2, $3, $4) RETURNING id"
+
+	var userID int
+	err := db.QueryRow(query, user.Name, user.Email, user.Password, user.Plan).Scan(&userID)
+	if err != nil {
+		return 0, err
+	}
+	return userID, nil
 }
