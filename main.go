@@ -8,6 +8,8 @@ import (
 func main() {
 	db := database.ConnectDB()
 	defer db.Close()
-	
+
+	database.CreateTables(db)
+
 	router.InitializeServer()
 }
