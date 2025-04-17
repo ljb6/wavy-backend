@@ -12,7 +12,8 @@ func CreateTables(db *sql.DB) {
 		name VARCHAR(100) NOT NULL,
 		email VARCHAR(100) UNIQUE NOT NULL,
 		password VARCHAR(255) NOT NULL,
-		plan VARCHAR(100) NOT NULL
+		plan VARCHAR(100) NOT NULL,
+		created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 		)`
 
 	_, err := db.Exec(createUsersTableqQuery)
