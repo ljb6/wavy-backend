@@ -1,18 +1,15 @@
 package router
 
 import (
+	"database/sql"
+
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
-func InitializeServer() {
+func InitializeServer(db *sql.DB) {
 	router := gin.Default()
 
-	router.GET("/status", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-		  "status": "working",
-		})
-	  })
+	InitializeRoutes(router, db)
 
 	router.Run() // listen and serve on 0.0.0.0:8080
 }

@@ -11,5 +11,5 @@ func main() {
 
 	database.CreateTables(db)
 
-	router.InitializeServer()
+	router.InitializeServer(db)
 }
