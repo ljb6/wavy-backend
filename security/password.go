@@ -1,6 +1,14 @@
 package security
 
-import "golang.org/x/crypto/bcrypt"
+import (
+	"os"
+	"time"
+
+	"github.com/golang-jwt/jwt/v5"
+	"golang.org/x/crypto/bcrypt"
+)
+
+var JWT_SECRET = []byte(os.Getenv("JWT_SECRET"))
 
 func HashPassword(password string) (string, error) {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
@@ -13,4 +21,13 @@ func HashPassword(password string) (string, error) {
 func CheckPassword(hashedPassword, password string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
 	return err == nil
+}
+
+func GenerateJWT(userID string) (string, error) {
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"userID": userID,
+		"exp": time.Now().Add(time.Hour * 24).Unix(),
+	})
+
+	return token.SignedString(JWT_SECRET)
 }
