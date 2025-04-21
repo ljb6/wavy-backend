@@ -10,6 +10,13 @@ import (
 
 func InitializeRoutes(router *gin.Engine, db *sql.DB) {
 
+	// check auth
+	router.GET("auth/check", middleware.AuthMiddleware(), func(ctx *gin.Context) {
+		userID := ctx.GetString("userID")
+		ctx.JSON(200, gin.H{"userID": userID})
+	})
+
+	// user
 	userRepo := user.NewRepository(db)
 	userService := user.NewService(userRepo)
 	userHandler := user.NewHandler(userService)
@@ -22,5 +29,5 @@ func InitializeRoutes(router *gin.Engine, db *sql.DB) {
 	// private router
 	private := router.Group("/private")
 	private.Use(middleware.AuthMiddleware())
-	//private.GET("/profile")
+	private.GET("/auth/check")
 }
