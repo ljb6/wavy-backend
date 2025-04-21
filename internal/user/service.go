@@ -28,11 +28,11 @@ func (s *Service) Register(user User) error {
 func (s *Service) Login(email, password string) (*User, error) {
 	user, err := s.repo.GetUserByEmail(email)
 	if err != nil {
-		return nil, errors.New("User not found")
+		return nil, errors.New("user not found")
 	}
 
-	if !security.CheckPassword(user.password, password) {
-		return nil, errors.New("Incorrect password")
+	if !security.CheckPassword(user.Password, password) {
+		return nil, errors.New("incorrect password")
 	}
 
 	return user, nil
