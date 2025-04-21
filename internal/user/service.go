@@ -2,6 +2,7 @@ package user
 
 import (
 	"errors"
+	"strconv"
 
 	"github.com/ljb6/wavy-backend/security"
 )
@@ -25,15 +26,20 @@ func (s *Service) Register(user User) error {
     return s.repo.Create(user)
 }
 
-func (s *Service) Login(email, password string) (*User, error) {
+func (s *Service) Login(email, password string) (string, error) {
 	user, err := s.repo.GetUserByEmail(email)
 	if err != nil {
-		return nil, errors.New("user not found")
+		return "", errors.New("user not found")
 	}
 
 	if !security.CheckPassword(user.Password, password) {
-		return nil, errors.New("incorrect password")
+		return "", errors.New("incorrect password")
 	}
 
-	return user, nil
+	token, err := security.GenerateJWT(strconv.Itoa(user.ID))
+	if err != nil {
+		return "", errors.New("errow while generating JWT token")
+	}
+
+	return token, nil
 }
