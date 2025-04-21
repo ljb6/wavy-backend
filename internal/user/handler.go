@@ -33,3 +33,20 @@ func (h *Handler) RegisterHandler(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, gin.H{"message": "User created with success"})
 }
+
+func (h *Handler) LoginHandler(c *gin.Context) {
+
+	var req LoginRequest
+
+	err := c.ShouldBindJSON(&req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid data"})
+	}
+
+	user, err := h.service.Login(req.Email, req.Password)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.h{"error": err.Error()})
+	}
+
+	c.JSON(http.StatusOK, gin.h{"message": "Logged with success", "user": user})
+}
