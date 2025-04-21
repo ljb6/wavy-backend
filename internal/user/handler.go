@@ -1,6 +1,7 @@
 package user
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -43,10 +44,17 @@ func (h *Handler) LoginHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid data"})
 	}
 
-	user, err := h.service.Login(req.Email, req.Password)
+	token, err := h.service.Login(req.Email, req.Password)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Logged with success", "user": user})
+	c.SetCookie("token", token, 3600, "/", "", false, true)
+
+	c.Writer.Header().Set("Set-Cookie", fmt.Sprintf("token=%s; Path=/; HttpOnly; SameSite=None", token))
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Logged with success",
+		"token": token,
+	})
 }

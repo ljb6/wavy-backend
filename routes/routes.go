@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/ljb6/wavy-backend/internal/user"
+	"github.com/ljb6/wavy-backend/internal/middleware"
 )
 
 func InitializeRoutes(router *gin.Engine, db *sql.DB) {
@@ -12,10 +13,14 @@ func InitializeRoutes(router *gin.Engine, db *sql.DB) {
 	userRepo := user.NewRepository(db)
 	userService := user.NewService(userRepo)
 	userHandler := user.NewHandler(userService)
-	
-	
 
-	userGroup := router.Group("/user")
-	userGroup.POST("/register", userHandler.RegisterHandler)
-	userGroup.POST("/login", userHandler.LoginHandler)
+	// public router
+	public := router.Group("/user")
+	public.POST("/register", userHandler.RegisterHandler)
+	public.POST("/login", userHandler.LoginHandler)
+
+	// private router
+	private := router.Group("/private")
+	private.Use(middleware.AuthMiddleware())
+	//private.GET("/profile")
 }

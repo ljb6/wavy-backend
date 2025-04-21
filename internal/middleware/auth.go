@@ -12,17 +12,16 @@ import (
 var jwt_secret = []byte(os.Getenv("JWT_SECRET"))
 
 func AuthMiddleware() gin.HandlerFunc {
-	fmt.Println("usando middlware")
 	return func (c *gin.Context) {
+		// search for the token
 		tokenString, err := c.Cookie("token")
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Token not found"})
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Token not found"})
 			c.Abort()
 			return
 		}
 
-		fmt.Println("o token:", tokenString)
-
+		// validating
 		token, err := jwt.Parse(tokenString, func(t *jwt.Token) (interface{}, error) {
 			if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
 				return nil, fmt.Errorf("unexpected signing method")
