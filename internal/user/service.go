@@ -4,7 +4,7 @@ import (
 	"errors"
 	"strconv"
 
-	"github.com/ljb6/wavy-backend/security"
+	"github.com/ljb6/wavy-backend/internal/security"
 )
 
 type Service struct {
