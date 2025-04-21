@@ -1,6 +1,7 @@
 package security
 
 import (
+	"log"
 	"os"
 	"time"
 
@@ -13,6 +14,7 @@ var JWT_SECRET = []byte(os.Getenv("JWT_SECRET"))
 func HashPassword(password string) (string, error) {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
+		log.Println("Error while hashing password: ", err)
 		return "", err
 	}
 	return string(hashedPassword), nil
