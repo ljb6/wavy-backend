@@ -10,4 +10,5 @@ import (
 func InitializeRoutes(router *gin.Engine, db *sql.DB) {
 	userGroup := router.Group("/user")
 	userGroup.POST("/register", func(ctx *gin.Context) { handlers.RegisterUser(ctx, db) })
+	userGroup.POST("/login", func(ctx *gin.Context) { handlers.LoginUser(ctx, db) })
 }
