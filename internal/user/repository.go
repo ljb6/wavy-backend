@@ -15,3 +15,13 @@ func (r *Repository) Create(user User) error {
    	_, err := r.DB.Exec(query, user.Name, user.Email, user.Password, user.Plan)
     return err
 }
+
+func (r *Repository) GetUserByEmail(email string) (*User, error) {
+	var user User
+	row := r.DB.QueryRow(`SELECT id, name, email, password, plan, created_at FROM users WHERE email = $1`, email)
+	err := row.Scan(&user.ID, &user.Name, &user.Email, &user.Password, &user.Plan, &user.CreatedAt)
+	if err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
