@@ -17,5 +17,5 @@ func InitializeRoutes(router *gin.Engine, db *sql.DB) {
 
 	userGroup := router.Group("/user")
 	userGroup.POST("/register", userHandler.RegisterHandler)
-	// userGroup.POST("/login", func(ctx *gin.Context) { handlers.LoginUser(ctx, db) })
+	userGroup.POST("/login", userHandler.LoginHandler)
 }
