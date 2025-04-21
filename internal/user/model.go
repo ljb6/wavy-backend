@@ -7,6 +7,11 @@ type User struct {
 	Name      string    `jsond:"name"`
 	Email     string    `jsond:"email"`
 	Password  string    `jsond:"-"`
-	Plan      string    `jsond:"plan"`
+	Plan      string    `json:"plan"`
 	CreatedAt time.Time `json:"created_at"`
+}
+
+type LoginRequest struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
