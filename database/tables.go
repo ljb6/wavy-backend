@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/ljb6/wavy-backend/models"
+	"github.com/ljb6/wavy-backend/security"
 )
 
 func CreateTables(db *sql.DB) {
@@ -27,10 +28,16 @@ func CreateTables(db *sql.DB) {
 func CreateUser(db *sql.DB, user models.User) (int, error) {
 	query := "INSERT INTO users (name, email, password, plan) VALUES ($1, $2, $3, $4) RETURNING id"
 
-	var userID int
-	err := db.QueryRow(query, user.Name, user.Email, user.Password, user.Plan).Scan(&userID)
+	hashedPassword, err := security.HashPassword(user.Password)
 	if err != nil {
 		return 0, err
 	}
+
+	var userID int
+	err = db.QueryRow(query, user.Name, user.Email, hashedPassword, user.Plan).Scan(&userID)
+	if err != nil {
+		return 0, err
+	}
+
 	return userID, nil
 }
