@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/ljb6/wavy-backend/internal/user"
-	"github.com/ljb6/wavy-backend/middleware"
+	"github.com/ljb6/wavy-backend/internal/middleware"
 )
 
 func InitializeRoutes(router *gin.Engine, db *sql.DB) {
