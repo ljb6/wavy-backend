@@ -45,7 +45,7 @@ func (h *Handler) LoginHandler(c *gin.Context) {
 
 	user, err := h.service.Login(req.Email, req.Password)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.h{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	}
 
 	c.JSON(http.StatusOK, gin.h{"message": "Logged with success", "user": user})
