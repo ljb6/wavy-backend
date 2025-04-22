@@ -25,3 +25,13 @@ func (r *Repository) GetTokenByEmail(email string) (*User, error) {
 	}
 	return &user, nil
 }
+
+func (r *Repository) GetUserDataByID(id string) (*User, error) {
+	var user User
+	row := r.DB.QueryRow(`SELECT id, name, email, password, plan, created_at FROM users WHERE id = $1`, id)
+	err := row.Scan(&user.ID, &user.Name, &user.Email, &user.Password, &user.Plan, &user.CreatedAt)
+	if err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
