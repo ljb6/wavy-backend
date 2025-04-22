@@ -16,7 +16,7 @@ func (r *Repository) Create(user User) error {
     return err
 }
 
-func (r *Repository) GetUserByEmail(email string) (*User, error) {
+func (r *Repository) GetTokenByEmail(email string) (*User, error) {
 	var user User
 	row := r.DB.QueryRow(`SELECT id, name, email, password, plan, created_at FROM users WHERE email = $1`, email)
 	err := row.Scan(&user.ID, &user.Name, &user.Email, &user.Password, &user.Plan, &user.CreatedAt)

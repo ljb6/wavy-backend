@@ -27,7 +27,7 @@ func (s *Service) Register(user User) error {
 }
 
 func (s *Service) Login(email, password string) (string, error) {
-	user, err := s.repo.GetUserByEmail(email)
+	user, err := s.repo.GetTokenByEmail(email)
 	if err != nil {
 		return "", errors.New("user not found")
 	}
