@@ -44,5 +44,4 @@ func InitializeRoutes(router *gin.Engine, db *sql.DB) {
 	private := router.Group("/private")
 	private.Use(middleware.AuthMiddleware())
 	private.GET("/auth/check")
-	private.GET("/user/data")
 }
