@@ -58,3 +58,15 @@ func (h *Handler) LoginHandler(c *gin.Context) {
 		"token": token,
 	})
 }
+
+func (h *Handler) LogoutHandler(c *gin.Context) {
+
+	c.SetCookie("token", "", 3600, "/", "", false, true)
+
+	c.Writer.Header().Set("Set-Cookie", fmt.Sprint("token=; Path=/; HttpOnly; SameSite=None", ""))
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Logged out with success",
+		"token": "",
+	})
+}
