@@ -17,7 +17,6 @@ type LoginRequest struct {
 }
 
 type ChangePasswordRequest struct {
-	Id          string `json:"id"`
 	Password    string `json:"password"`
 	NewPassword string `json:"new_password"`
 }
