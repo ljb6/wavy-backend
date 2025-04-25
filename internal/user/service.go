@@ -43,3 +43,28 @@ func (s *Service) Login(email, password string) (string, error) {
 
 	return token, nil
 }
+
+func (s *Service) ChangePassword(id, password, newPassword string) error {
+
+	user, err := s.repo.GetUserDataByID(id)
+	if err != nil {
+		return err
+	}
+
+	// checking password
+	if (!security.CheckPassword(user.Password, password)) {
+		return err
+	}
+
+	newHashedPassword, err := security.HashPassword(newPassword)
+	if err != nil {
+		return err
+	}
+	
+	err = s.repo.ChangePassword(id, newHashedPassword)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
