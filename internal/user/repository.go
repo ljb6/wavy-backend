@@ -35,3 +35,11 @@ func (r *Repository) GetUserDataByID(id string) (*User, error) {
 	}
 	return &user, nil
 }
+
+func (r *Repository) ChangePassword(id, newPassword string) error {
+	_, err := r.DB.Exec(`UPDATE users SET password = $1 WHERE id = $2`, newPassword, id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
