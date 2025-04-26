@@ -2,7 +2,6 @@ package subscribers
 
 import (
 	"database/sql"
-	"fmt"
 )
 
 type Repository struct {
