@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/ljb6/wavy-backend/internal/middleware"
+	"github.com/ljb6/wavy-backend/internal/subscribers"
 	"github.com/ljb6/wavy-backend/internal/user"
 )
 
@@ -15,6 +16,11 @@ func InitializeRoutes(router *gin.Engine, db *sql.DB) {
 	userRepo := user.NewRepository(db)
 	userService := user.NewService(userRepo)
 	userHandler := user.NewHandler(userService)
+
+	// subscribers
+	subscribersRepo := subscribers.NewRepository(db)
+	subscribersService := subscribers.NewService(subscribersRepo)
+	subscribersHandler := subscribers.NewHandler(subscribersService)
 
 	// check auth
 	router.GET("auth/check", middleware.AuthMiddleware(), func(ctx *gin.Context) {
