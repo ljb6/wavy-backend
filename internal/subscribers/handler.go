@@ -1,6 +1,7 @@
 package subscribers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -33,10 +34,12 @@ func (h *Handler) HandleNewSubscriberManually(c *gin.Context) {
 func (h *Handler) HandleGetSubscribers(c *gin.Context) {
 
 	userID := c.GetString("userID")
+	
+	fmt.Println(userID)
 
 	jsonSubs, err := h.service.GetSubscribers(userID)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "impossible to get subscribers"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "impossible to get subscribers"})
 	}
 
 	c.JSON(http.StatusOK, jsonSubs)

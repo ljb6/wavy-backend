@@ -1,6 +1,9 @@
 package subscribers
 
-import "database/sql"
+import (
+	"database/sql"
+	"fmt"
+)
 
 type Repository struct {
 	DB *sql.DB
@@ -17,7 +20,7 @@ func (r *Repository) AddSubscriber(req SubRequest, userID string) error {
 }
 
 func (r *Repository) GetSubscribers(userID string) ([]Subscribers, error) {
-	query := `SELECT id, name, email, created_at FROM subscribers where user_id = ?`
+	query := `SELECT id, name, email FROM subscribers WHERE user_id = $1`
 	rows, err := r.DB.Query(query, userID)
 	if err != nil {
 		return nil, err
@@ -34,5 +37,6 @@ func (r *Repository) GetSubscribers(userID string) ([]Subscribers, error) {
 		}
 		subscribers = append(subscribers, sub)
 	}
+
 	return subscribers, nil
 }
