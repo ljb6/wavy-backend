@@ -17,11 +17,12 @@ func CreateTables(db *sql.DB) {
 		)`
 
 	createSubscribersTableQuery := `
-		CREATE TABLE IF NOT EXISTS users (
+		CREATE TABLE IF NOT EXISTS subscribers (
 		id SERIAL PRIMARY KEY, 
 		user_id VARCHAR(100) NOT NULL,
 		name VARCHAR(100) NOT NULL,
 		email VARCHAR(100) NOT NULL,
+		created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 		)`
 
 	_, err := db.Exec(createUsersTableQuery)
