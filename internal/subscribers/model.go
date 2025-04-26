@@ -1,6 +1,6 @@
 package subscribers
 
-type Subscribers struct {
+type Subscriber struct {
 	ID      int    `jsond:"id"`
 	User_ID int    `json:"user_id"`
 	Name    string `jsond:"name"`
