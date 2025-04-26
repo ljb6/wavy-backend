@@ -42,5 +42,5 @@ func (h *Handler) HandleGetSubscribers(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "impossible to get subscribers"})
 	}
 
-	c.JSON(http.StatusOK, jsonSubs)
+	c.Data(http.StatusOK, "application/json", jsonSubs)
 }
