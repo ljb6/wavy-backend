@@ -6,7 +6,7 @@ import (
 )
 
 func CreateTables(db *sql.DB) {
-	createUsersTableqQuery := `
+	createUsersTableQuery := `
 		CREATE TABLE IF NOT EXISTS users (
 		id SERIAL PRIMARY KEY,
 		name VARCHAR(100) NOT NULL,
@@ -16,8 +16,21 @@ func CreateTables(db *sql.DB) {
 		created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 		)`
 
-	_, err := db.Exec(createUsersTableqQuery)
+	createSubscribersTableQuery := `
+		CREATE TABLE IF NOT EXISTS users (
+		id SERIAL PRIMARY KEY, 
+		user_id VARCHAR(100) NOT NULL,
+		name VARCHAR(100) NOT NULL,
+		email VARCHAR(100) NOT NULL,
+		)`
+
+	_, err := db.Exec(createUsersTableQuery)
 	if err != nil {
 		log.Fatal("Error while creating 'users' table:", err)
+	}
+
+	_, err = db.Exec(createSubscribersTableQuery)
+	if err != nil {
+		log.Fatal("Error while creating 'subscribers' table:", err)
 	}
 }
