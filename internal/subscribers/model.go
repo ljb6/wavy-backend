@@ -6,3 +6,8 @@ type Subscribers struct {
 	Name    string `jsond:"name"`
 	Email   string `jsond:"email"`
 }
+
+type SubRequest struct {
+	Name  string `jsond:"name"`
+	Email string `jsond:"email"`
+}

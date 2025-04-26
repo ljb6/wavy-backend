@@ -41,15 +41,16 @@ func InitializeRoutes(router *gin.Engine, db *sql.DB) {
 		})
 	})
 
-	// public router
+	// public routes
 	public := router.Group("/user")
 	public.POST("/register", userHandler.RegisterHandler)
 	public.POST("/login", userHandler.LoginHandler)
 
-	// private router
+	// private routes
 	private := router.Group("/private")
 	private.Use(middleware.AuthMiddleware())
 	private.GET("/auth/check")
 	private.POST("/auth/logout", userHandler.LogoutHandler)
 	private.POST("/auth/changepassword", userHandler.ChangePasswordHandler)
+	private.POST("/database/addsub", subscribersHandler.HandleNewSubscriberManually)
 }
