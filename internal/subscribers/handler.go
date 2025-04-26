@@ -29,3 +29,15 @@ func (h *Handler) HandleNewSubscriberManually(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "error in adding subscriber"})
 	}
 }
+
+func (h *Handler) HandleGetSubscribers(c *gin.Context) {
+
+	userID := c.GetString("userID")
+
+	jsonSubs, err := h.service.GetSubscribers(userID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "impossible to get subscribers"})
+	}
+
+	c.JSON(http.StatusOK, jsonSubs)
+}
