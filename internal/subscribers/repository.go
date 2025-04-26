@@ -15,3 +15,24 @@ func (r *Repository) AddSubscriber(req SubRequest, userID string) error {
    	_, err := r.DB.Exec(query, userID, req.Name, req.Email)
     return err
 }
+
+func (r *Repository) GetSubscribers(userID string) ([]Subscribers, error) {
+	query := `SELECT id, name, email, created_at FROM subscribers where user_id = ?`
+	rows, err := r.DB.Query(query, userID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var subscribers []Subscribers
+
+	for rows.Next() {
+		var sub Subscribers
+		err := rows.Scan(&sub.ID, &sub.Name, &sub.Email)
+		if err != nil {
+			return nil, err
+		}
+		subscribers = append(subscribers, sub)
+	}
+	return subscribers, nil
+}
