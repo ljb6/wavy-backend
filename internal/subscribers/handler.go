@@ -44,3 +44,15 @@ func (h *Handler) HandleGetSubscribers(c *gin.Context) {
 
 	c.Data(http.StatusOK, "application/json", jsonSubs)
 }
+
+func (h *Handler) HandleClearSubscribersData(c *gin.Context) {
+
+	userID := c.GetString("userID")
+
+	err := h.service.ClearSubscribers(userID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "error to clear subscribers"})
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "subscribers cleared with success"})
+}

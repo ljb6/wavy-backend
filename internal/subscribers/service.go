@@ -33,3 +33,11 @@ func (s *Service) GetSubscribers(userID string) ([]byte, error) {
 
 	return jsonSubs, nil
 }
+
+func (s *Service) ClearSubscribers(userID string) error {
+	err := s.repo.ClearSubscribersFromID(userID)
+	if err != nil{
+		return err
+	}
+	return nil
+}
