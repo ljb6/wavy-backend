@@ -39,3 +39,9 @@ func (r *Repository) GetSubscribers(userID string) ([]Subscriber, error) {
 
 	return subscribers, nil
 }
+
+func (r *Repository) ClearSubscribersFromID(userID string) error {
+	query := `DELETE FROM subscribers WHERE user_id = $1`
+   	_, err := r.DB.Exec(query, userID)
+    return err
+}

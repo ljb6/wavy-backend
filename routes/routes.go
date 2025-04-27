@@ -54,4 +54,5 @@ func InitializeRoutes(router *gin.Engine, db *sql.DB) {
 	private.POST("/auth/changepassword", userHandler.ChangePasswordHandler)
 	private.POST("/database/addsub", subscribersHandler.HandleNewSubscriberManually)
 	private.GET("/database/getsubs", subscribersHandler.HandleGetSubscribers)
+	private.POST("/database/clearsubs", subscribersHandler.HandleClearSubscribersData)
 }
