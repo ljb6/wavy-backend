@@ -18,7 +18,7 @@ cd wavy-backend
 
 ## 2. Setup the database
 
-In database/database.go and docker-compose.yml, configure the database connection.
+In database/database.go and docker-compose.yml, configure the database connection and be sure you have the postgres 12 image in your Docker.
 
 ## 3. Environment Variables
 
