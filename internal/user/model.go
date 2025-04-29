@@ -14,6 +14,9 @@ type User struct {
 type UserSettings struct {
 	ID       int    `jsond:"id"`
 	User_ID  int    `json:"user_id"`
+	Host     string `json:"host"`
+	Port     int    `json:"port"`
+	User     string `json:"user"`
 	SMTP_KEY string `jsond:"smtp_key"`
 }
 

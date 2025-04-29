@@ -20,6 +20,9 @@ func CreateTables(db *sql.DB) {
 		CREATE TABLE IF NOT EXISTS user_settings (
 		id SERIAL PRIMARY KEY,
 		user_id VARCHAR(100) NOT NULL,
+		host VARCHAR(100) NOT NULL,
+		port int,
+		user VARCHAR(100) NOT NULL,
 		smtp_key TEXT
 		)`
 
