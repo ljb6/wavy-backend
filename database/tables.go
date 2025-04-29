@@ -16,6 +16,13 @@ func CreateTables(db *sql.DB) {
 		created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 		)`
 
+	createUserSettingsTable := `
+		CREATE TABLE IF NOT EXISTS user_settings (
+		id SERIAL PRIMARY KEY,
+		user_id VARCHAR(100) NOT NULL,
+		stmp_key TEXT
+		)`
+
 	createSubscribersTableQuery := `
 		CREATE TABLE IF NOT EXISTS subscribers (
 		id SERIAL PRIMARY KEY, 
@@ -33,5 +40,10 @@ func CreateTables(db *sql.DB) {
 	_, err = db.Exec(createSubscribersTableQuery)
 	if err != nil {
 		log.Fatal("Error while creating 'subscribers' table:", err)
+	}
+
+	_, err = db.Exec(createUserSettingsTable)
+	if err != nil {
+		log.Fatal("Error while creating 'user_settings' table:", err)
 	}
 }
