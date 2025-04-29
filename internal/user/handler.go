@@ -89,3 +89,19 @@ func (h *Handler) ChangePasswordHandler(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"message": "password changed with sucess"})
 }
+
+func (h *Handler) SetUserSettingsHandler(c *gin.Context) {
+
+	var req UserSettings
+
+	userID := c.GetString("userID")
+
+	req.User_ID = userID
+
+	err := c.ShouldBindJSON(&req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid data"})
+	}
+
+	fmt.Println(req)
+}
