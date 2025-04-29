@@ -10,7 +10,7 @@ type EmailHandler struct {
 	emailService *EmailService
 }
 
-func NewHandler(service *EmailService) *EmailHandler {
+func NewEmailHandler(service *EmailService) *EmailHandler {
 	return &EmailHandler{emailService: service}
 }
 
@@ -24,10 +24,10 @@ func (e *EmailHandler) SendEmailHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid data"})
 	}
 
-	err := e.emailService.SendEmail(req, userID)
+	err = e.emailService.SendEmail(req, userID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
 	}
 
-	c.JSON(http.StatusOK, g.H{"message": "email sent"})
+	c.JSON(http.StatusOK, gin.H{"message": "email sent"})
 }

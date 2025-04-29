@@ -2,9 +2,10 @@ package router
 
 import (
 	"database/sql"
-	"net/http"
+	"net/http"	
 
 	"github.com/gin-gonic/gin"
+	"github.com/ljb6/wavy-backend/internal/email"
 	"github.com/ljb6/wavy-backend/internal/middleware"
 	"github.com/ljb6/wavy-backend/internal/subscribers"
 	"github.com/ljb6/wavy-backend/internal/user"
@@ -21,6 +22,10 @@ func InitializeRoutes(router *gin.Engine, db *sql.DB) {
 	subscribersRepo := subscribers.NewRepository(db)
 	subscribersService := subscribers.NewService(subscribersRepo)
 	subscribersHandler := subscribers.NewHandler(subscribersService)
+
+	// mail
+	mailService := email.NewEmailService(userRepo)
+	mailHandler := email.NewEmailHandler(mailService)
 
 	// check auth
 	router.GET("auth/check", middleware.AuthMiddleware(), func(ctx *gin.Context) {
@@ -55,4 +60,5 @@ func InitializeRoutes(router *gin.Engine, db *sql.DB) {
 	private.POST("/database/addsub", subscribersHandler.HandleNewSubscriberManually)
 	private.GET("/database/getsubs", subscribersHandler.HandleGetSubscribers)
 	private.POST("/database/clearsubs", subscribersHandler.HandleClearSubscribersData)
+	private.POST("/mail/sendmail", mailHandler.SendEmailHandler)
 }
