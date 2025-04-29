@@ -43,3 +43,9 @@ func (r *Repository) ChangePassword(id, newPassword string) error {
 	}
 	return nil
 }
+
+func (r *Repository) CreateUserSettings(req UserSettings) error {
+    query := `INSERT INTO user_settings (user_id, host, port, user, smtp_key) VALUES ($1, $2, $3, $4, $5)`
+   	_, err := r.DB.Exec(query, req.User_ID, req.Host, req.Port, req.User, req.SMTP_KEY)
+    return err
+}
