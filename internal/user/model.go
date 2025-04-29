@@ -11,6 +11,12 @@ type User struct {
 	CreatedAt time.Time `json:"created_at"`
 }
 
+type UserSettings struct {
+	ID       int    `jsond:"id"`
+	User_ID  int    `json:"user_id"`
+	SMTP_KEY string `jsond:"smtp_key"`
+}
+
 type LoginRequest struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
