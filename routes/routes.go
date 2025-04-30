@@ -2,7 +2,7 @@ package router
 
 import (
 	"database/sql"
-	"net/http"	
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/ljb6/wavy-backend/internal/email"
@@ -38,10 +38,10 @@ func InitializeRoutes(router *gin.Engine, db *sql.DB) {
 		}
 
 		ctx.JSON(http.StatusOK, gin.H{
-			"userID": user.ID,
-			"name": user.Name,
-			"email": user.Email,
-			"plan": user.Plan,
+			"userID":     user.ID,
+			"name":       user.Name,
+			"email":      user.Email,
+			"plan":       user.Plan,
 			"created_at": user.CreatedAt,
 		})
 	})
@@ -54,11 +54,16 @@ func InitializeRoutes(router *gin.Engine, db *sql.DB) {
 	// private routes
 	private := router.Group("/private")
 	private.Use(middleware.AuthMiddleware())
+
+	// GET
 	private.GET("/auth/check")
+	private.GET("/database/getsubs", subscribersHandler.HandleGetSubscribers)
+
+	// POST
 	private.POST("/auth/logout", userHandler.LogoutHandler)
 	private.POST("/auth/changepassword", userHandler.ChangePasswordHandler)
 	private.POST("/database/addsub", subscribersHandler.HandleNewSubscriberManually)
-	private.GET("/database/getsubs", subscribersHandler.HandleGetSubscribers)
 	private.POST("/database/clearsubs", subscribersHandler.HandleClearSubscribersData)
+	private.POST("/database/setsettings", userHandler.SetUserSettingsHandler)
 	private.POST("/mail/sendmail", mailHandler.SendEmailHandler)
 }

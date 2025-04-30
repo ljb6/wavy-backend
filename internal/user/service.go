@@ -68,3 +68,11 @@ func (s *Service) ChangePassword(id, password, newPassword string) error {
 
 	return nil
 }
+
+func (s *Service) CreateUserSettings(req UserSettings) error {
+	err := s.repo.CreateUserSettings(req)
+	if err != nil {
+		return err
+	}
+	return nil
+}

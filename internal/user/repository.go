@@ -1,6 +1,9 @@
 package user
 
-import "database/sql"
+import (
+	"database/sql"
+	"fmt"
+)
 
 type Repository struct {
 	DB *sql.DB
@@ -42,4 +45,18 @@ func (r *Repository) ChangePassword(id, newPassword string) error {
 		return err
 	}
 	return nil
+}
+
+func (r *Repository) DeleteUserSettings(userID string) {
+	query := `DELETE FROM user_settings WHERE user_id = $1`
+	_, _ = r.DB.Exec(query, userID)
+}
+
+func (r *Repository) CreateUserSettings(req UserSettings) error {
+	// garantir o delete da setting antiga
+	r.DeleteUserSettings(req.User_ID)
+    query := `INSERT INTO user_settings (user_id, host, port, username, smtp_key) VALUES ($1, $2, $3, $4, $5)`
+   	_, err := r.DB.Exec(query, req.User_ID, req.Host, req.Port, req.Username, req.SMTP_KEY)
+	fmt.Println(err)
+    return err
 }
