@@ -70,7 +70,15 @@ func (s *Service) ChangePassword(id, password, newPassword string) error {
 }
 
 func (s *Service) CreateUserSettings(req UserSettings) error {
-	err := s.repo.CreateUserSettings(req)
+
+	encryptedKey, err := security.Encrypt(req.SMTP_KEY)
+	if err != nil {
+		return err
+	}
+
+	req.SMTP_KEY = encryptedKey
+
+	err = s.repo.CreateUserSettings(req)
 	if err != nil {
 		return err
 	}
