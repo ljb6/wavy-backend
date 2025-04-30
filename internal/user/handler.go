@@ -103,5 +103,10 @@ func (h *Handler) SetUserSettingsHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid data"})
 	}
 
-	fmt.Println(req)
+	err = h.service.CreateUserSettings(req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid data"})
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "settings saved with success"})
 }
