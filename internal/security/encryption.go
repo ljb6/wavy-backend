@@ -6,10 +6,19 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	"io"
+	"os"
 )
 
-func Encrypt(key string, secret []byte) (string, error) {
-	block, err := aes.NewCipher(secret)
+var ENCRYPTION_KEY []byte
+
+func InitEncryptionKey() {
+	keySecrect := os.Getenv("ENCRYPTION_KEY")
+	ENCRYPTION_KEY = []byte(keySecrect)
+}
+
+func Encrypt(key string) (string, error) {
+
+	block, err := aes.NewCipher(ENCRYPTION_KEY)
 	if err != nil {
 		return "", err
 	}
@@ -22,7 +31,7 @@ func Encrypt(key string, secret []byte) (string, error) {
 	nonce := make([]byte, aesGCM.NonceSize())
 	_, err = io.ReadFull(rand.Reader, nonce)
 	if err != nil {
-		return "", nil
+		return "", err
 	}
 
 	cipherText := aesGCM.Seal(nonce, nonce, []byte(key), nil)
