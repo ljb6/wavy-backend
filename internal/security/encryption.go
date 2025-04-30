@@ -37,3 +37,21 @@ func Encrypt(key string) (string, error) {
 	cipherText := aesGCM.Seal(nonce, nonce, []byte(key), nil)
 	return base64.StdEncoding.EncodeToString(cipherText), nil
 }
+
+func Decrypt(secret string) (string, error) {
+	
+	cipherTxt, _ := base64.StdEncoding.DecodeString(secret)
+
+	block, _ := aes.NewCipher(ENCRYPTION_KEY)
+    aesGCM, _ := cipher.NewGCM(block)
+
+    nonceSize := aesGCM.NonceSize()
+    nonce, cipherData := cipherTxt[:nonceSize], cipherTxt[nonceSize:]
+
+    plainText, err := aesGCM.Open(nil, nonce, cipherData, nil)
+    if err != nil {
+        return "", err
+    }
+
+    return string(plainText), nil
+}
