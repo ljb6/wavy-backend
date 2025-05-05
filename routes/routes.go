@@ -24,7 +24,7 @@ func InitializeRoutes(router *gin.Engine, db *sql.DB) {
 	subscribersHandler := subscribers.NewHandler(subscribersService)
 
 	// mail
-	mailService := email.NewEmailService(userRepo)
+	mailService := email.NewEmailService(userRepo, subscribersRepo)
 	mailHandler := email.NewEmailHandler(mailService)
 
 	// check auth
