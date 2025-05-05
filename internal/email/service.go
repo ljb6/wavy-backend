@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 
+	//"github.com/ljb6/wavy-backend/internal/security"
 	"github.com/ljb6/wavy-backend/internal/security"
 	"github.com/ljb6/wavy-backend/internal/subscribers"
 	"github.com/ljb6/wavy-backend/internal/user"
@@ -27,8 +28,6 @@ func (s *EmailService) SendEmail(req EmailReq, userID string) error {
 		return err
 	}
 
-	fmt.Println("chegou")
-
 	decrypted_key, err := security.Decrypt(settings.SMTP_KEY)
 	if err != nil {
 		return err
@@ -39,6 +38,7 @@ func (s *EmailService) SendEmail(req EmailReq, userID string) error {
 	if err != nil {
 		panic(err)
 	}
+	d.SSL = true
 
 	recipients, err := s.subscriberRepo.GetSubscribers(userID)
 	if err != nil {
@@ -47,10 +47,10 @@ func (s *EmailService) SendEmail(req EmailReq, userID string) error {
 
 	m := gomail.NewMessage()
 	for _, r := range recipients {
-		m.SetHeader("From", "luccajbecker@gmail.com")
+		m.SetHeader("From", settings.Username)
 		m.SetAddressHeader("To", r.Email, r.Name)
-		m.SetHeader("Subject", "Newsletter #1")
-		m.SetBody("text/html", fmt.Sprintf("Hello %s!", r.Name))
+		m.SetHeader("Subject", req.Subject)
+		m.SetBody("text/html", req.Body)
 
 		if err := gomail.Send(sd, m); err != nil {
 			log.Printf("Could not send email to %q: %v", r.Email, err)

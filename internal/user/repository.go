@@ -63,7 +63,7 @@ func (r *Repository) CreateUserSettings(req UserSettings) error {
 func (r *Repository) GetUserSettings(userID string) (*UserSettings, error) {
 	var settings UserSettings
 	row := r.DB.QueryRow(`SELECT id, user_id, host, port, username, smtp_key FROM user_settings WHERE user_id = $1`, userID)
-	err := row.Scan(&settings.ID, &settings.User_ID, &settings.Host, &settings.Port, &settings.User_ID, &settings.SMTP_KEY)
+	err := row.Scan(&settings.ID, &settings.User_ID, &settings.Host, &settings.Port, &settings.Username, &settings.SMTP_KEY)
 	if err != nil {
 		return nil, err
 	}
