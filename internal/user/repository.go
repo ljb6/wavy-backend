@@ -53,10 +53,19 @@ func (r *Repository) DeleteUserSettings(userID string) {
 }
 
 func (r *Repository) CreateUserSettings(req UserSettings) error {
-	// garantir o delete da setting antiga
 	r.DeleteUserSettings(req.User_ID)
     query := `INSERT INTO user_settings (user_id, host, port, username, smtp_key) VALUES ($1, $2, $3, $4, $5)`
    	_, err := r.DB.Exec(query, req.User_ID, req.Host, req.Port, req.Username, req.SMTP_KEY)
 	fmt.Println(err)
     return err
+}
+
+func (r *Repository) GetUserSettings(userID string) (*UserSettings, error) {
+	var settings UserSettings
+	row := r.DB.QueryRow(`SELECT id, user_id, host, port, username, smtp_key FROM user_settings WHERE user_id = $1`, userID)
+	err := row.Scan(&settings.ID, &settings.User_ID, &settings.Host, &settings.Port, &settings.Username, &settings.SMTP_KEY)
+	if err != nil {
+		return nil, err
+	}
+	return &settings, nil
 }

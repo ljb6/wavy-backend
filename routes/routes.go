@@ -24,7 +24,7 @@ func InitializeRoutes(router *gin.Engine, db *sql.DB) {
 	subscribersHandler := subscribers.NewHandler(subscribersService)
 
 	// mail
-	mailService := email.NewEmailService(userRepo)
+	mailService := email.NewEmailService(userRepo, subscribersRepo)
 	mailHandler := email.NewEmailHandler(mailService)
 
 	// check auth
@@ -58,6 +58,7 @@ func InitializeRoutes(router *gin.Engine, db *sql.DB) {
 	// GET
 	private.GET("/auth/check")
 	private.GET("/database/getsubs", subscribersHandler.HandleGetSubscribers)
+	private.GET("/database/getsettings", userHandler.GetUserSettingsHandler)
 
 	// POST
 	private.POST("/auth/logout", userHandler.LogoutHandler)

@@ -110,3 +110,19 @@ func (h *Handler) SetUserSettingsHandler(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"message": "settings saved with success"})
 }
+
+func (h *Handler) GetUserSettingsHandler(c *gin.Context) {
+
+	userID := c.GetString("userID")
+
+	settings, err := h.service.GetUserSettings(userID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "data is null"})
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"host": settings.Host,
+		"port": settings.Port,
+		"username": settings.Username,
+	})
+}
