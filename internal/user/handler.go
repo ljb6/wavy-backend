@@ -121,8 +121,8 @@ func (h *Handler) GetUserSettingsHandler(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"host": "host",
-		"port": "port",
-		"username": "username",
+		"host": settings.Host,
+		"port": settings.Port,
+		"username": settings.Username,
 	})
 }
