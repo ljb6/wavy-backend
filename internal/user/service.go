@@ -84,3 +84,11 @@ func (s *Service) CreateUserSettings(req UserSettings) error {
 	}
 	return nil
 }
+
+func (s *Service) GetUserSettings(userID string) (*UserSettings, error) {
+	settings, err := s.repo.GetUserSettings(userID)
+	if err != nil {
+		return nil, err
+	}
+	return settings, nil
+}
