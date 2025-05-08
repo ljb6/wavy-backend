@@ -59,6 +59,7 @@ func InitializeRoutes(router *gin.Engine, db *sql.DB) {
 	private.GET("/auth/check")
 	private.GET("/database/getsubs", subscribersHandler.HandleGetSubscribers)
 	private.GET("/database/getsettings", userHandler.GetUserSettingsHandler)
+	private.GET("database/download", subscribersHandler.HandleDataDownload)
 
 	// POST
 	private.POST("/auth/logout", userHandler.LogoutHandler)
