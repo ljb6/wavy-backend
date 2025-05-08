@@ -1,6 +1,7 @@
 package subscribers
 
 import (
+	"encoding/csv"
 	"fmt"
 	"net/http"
 
@@ -55,4 +56,27 @@ func (h *Handler) HandleClearSubscribersData(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "subscribers cleared with success"})
+}
+
+func (h *Handler) HandleDataDownload(c *gin.Context) {
+
+	userID := c.GetString("userID")
+
+    c.Header("Content-Disposition", "attachment; filename=data.csv")
+    c.Header("Content-Type", "text/csv")
+    c.Header("Cache-Control", "no-cache")
+
+    writer := csv.NewWriter(c.Writer)
+    defer writer.Flush()
+
+	data, err := h.service.DownloadData(userID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "error while downloading data"})
+	}
+
+    for _, row := range data {
+        if err := writer.Write(row); err != nil {
+            c.JSON(http.StatusOK, gin.H{"message": "error while generating csv"})
+        }
+    }
 }
